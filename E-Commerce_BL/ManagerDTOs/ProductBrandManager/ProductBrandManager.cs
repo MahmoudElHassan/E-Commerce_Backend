@@ -27,7 +27,7 @@ public class ProductBrandManager : IProductBrandManager
         return _mapper.Map<List<ReadProductBrandDTO>>(dbBrand);
     }
 
-    public ReadProductBrandDTO? GetById(Guid id)
+    public ReadProductBrandDTO? GetById(int id)
     {
         var dbBrand = _brandRepo.GetById(id);
 
@@ -41,7 +41,7 @@ public class ProductBrandManager : IProductBrandManager
     {
         var dbModel = _mapper.Map<ProductBrand>(dbBrand);
 
-        dbModel.Id = Guid.NewGuid();
+        dbModel.Id = int.Parse;
         dbModel.IsDelete = false;
 
         _brandRepo.Add(dbModel);
@@ -68,7 +68,7 @@ public class ProductBrandManager : IProductBrandManager
         return true;
     }
 
-    public void Delete(Guid id)
+    public void Delete(int id)
     {
         _brandRepo.DeleteById(id);
         _brandRepo.SaveChanges();

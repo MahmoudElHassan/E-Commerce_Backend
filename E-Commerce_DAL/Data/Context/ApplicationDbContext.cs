@@ -22,8 +22,15 @@ public class ApplicationDbContext : DbContext
             var entity = entry.Entity;
 
             if (entry.State == EntityState.Deleted) //&& entity is ISoftDelete
+            {
                 entry.State = EntityState.Modified;
                 entity.GetType().GetProperty("IsDelete")?.SetValue(entity, true);
+            }
+            else
+            {
+                entity.GetType().GetProperty("IsDelete")?.SetValue(entity, false);
+            }
+
         }
         return base.SaveChanges();
     }

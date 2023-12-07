@@ -52,7 +52,7 @@ public class ProductBrandController : Controller
 
     // PUT: api/EditBrand
     [HttpPut("EditBrand")]
-    public IActionResult EditBrand(UpdateProductBrandDTO brandDTO)
+    public ActionResult EditBrand(UpdateProductBrandDTO brandDTO)
     {
         //if (id != transaction.TransactionId)
         //{
@@ -69,7 +69,7 @@ public class ProductBrandController : Controller
 
     // DELETE: api/DeleteBrand/5
     [HttpDelete("DeleteBrand/{id}")]
-    public async Task<IActionResult> DeleteBrand(Guid id)
+    public ActionResult DeleteBrand(Guid id)
     {
         _brandManager.Delete(id);
 

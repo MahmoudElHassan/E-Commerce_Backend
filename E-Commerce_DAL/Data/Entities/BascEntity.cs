@@ -2,6 +2,6 @@
 
 public class BascEntity
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public bool IsDelete { get; set; } = false;
 }
