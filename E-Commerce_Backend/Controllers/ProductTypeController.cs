@@ -24,21 +24,17 @@ public class ProductTypeController : ControllerBase
     #region Method
     // GET: api/GetAllType
     [HttpGet("GetAllType")]
-    public ActionResult<IEnumerable<ReadProductTypeDTO>> GetAllType()
+    public async Task<ActionResult<List<ReadProductTypeDTO>>> GetAllType()
     {
-        return _typeManager.GetAll();
+        var result = await _typeManager.GetAll();
+        return Ok(result);
     }
 
     // GET: api/GetTypeById/5
     [HttpGet("GetTypeById/{id}")]
-    public ActionResult<ReadProductTypeDTO> GetTypeById(Guid id)
+    public async Task<ActionResult<ReadProductTypeDTO>> GetTypeById(int id)
     {
-        var typeDTO = _typeManager.GetById(id);
-
-        if (typeDTO == null)
-            return NotFound();
-
-        return typeDTO;
+        return await _typeManager.GetById(id);
     }
 
 
@@ -53,7 +49,7 @@ public class ProductTypeController : ControllerBase
 
     // PUT: api/EditBrand
     [HttpPut("EditType")]
-    public IActionResult EditType(UpdateProductTypeDTO typeDTO)
+    public ActionResult EditType(UpdateProductTypeDTO typeDTO)
     {
         //if (id != transaction.TransactionId)
         //{
@@ -70,7 +66,7 @@ public class ProductTypeController : ControllerBase
 
     // DELETE: api/DeleteType/5
     [HttpDelete("DeleteType/{id}")]
-    public async Task<IActionResult> DeleteType(Guid id)
+    public ActionResult DeleteType(int id)
     {
         _typeManager.Delete(id);
 

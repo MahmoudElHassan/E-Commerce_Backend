@@ -2,9 +2,9 @@
 
 public interface IProductBrandManager
 {
-    List<ReadProductBrandDTO> GetAll();
-    ReadProductBrandDTO? GetById(Guid id);
+    Task<IReadOnlyList<ReadProductBrandDTO>> GetAll();
+    Task<ReadProductBrandDTO>? GetById(int id);
     ReadProductBrandDTO Add(AddProductBrandDTO brandDTO);
     bool Update(UpdateProductBrandDTO brandDTO);
-    void Delete(Guid id);
+    void Delete(int id);
 }

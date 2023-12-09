@@ -2,9 +2,9 @@
 
 public interface IProductManager
 {
-    List<ReadProductDTO> GetAll();
-    ReadProductDTO? GetById(Guid id);
+    Task<IReadOnlyList<ReadProductDTO>> GetAll();
+    Task<ReadProductDTO>? GetById(int id);
     ReadProductDTO Add(AddProductDTO productDTO);
     bool Update(UpdateProductDTO productDTO);
-    void Delete(Guid id);
+    void Delete(int id);
 }

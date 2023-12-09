@@ -19,28 +19,28 @@ public class ProductManager : IProductManager
     #endregion
 
     #region Method
-    public List<ReadProductDTO> GetAll()
+    public Task<IReadOnlyList<ReadProductDTO>> GetAll()
     {
-        var dbProduct = _productRepo.GetAll().Where(d => d.IsDelete == false);
+        var dbProduct = _productRepo.GetAll().Result.Where(d => d.IsDelete == false);
 
-        return _mapper.Map<List<ReadProductDTO>>(dbProduct);
+        return Task.FromResult(_mapper.Map<IReadOnlyList<ReadProductDTO>>(dbProduct));
     }
 
-    public ReadProductDTO? GetById(Guid id)
+    public async Task<ReadProductDTO>? GetById(int id)
     {
         var dbProduct = _productRepo.GetById(id);
 
         if (dbProduct == null)
             return null;
 
-        return _mapper.Map<ReadProductDTO>(dbProduct);
+        return await Task.FromResult(_mapper.Map<ReadProductDTO>(dbProduct));
     }
 
     public ReadProductDTO Add(AddProductDTO productDTO)
     {
         var dbModel = _mapper.Map<Product>(productDTO);
 
-        dbModel.Id = Guid.NewGuid();
+        //dbModel.Id = Guid.NewGuid();
         dbModel.IsDelete = false;
 
         _productRepo.Add(dbModel);
@@ -56,18 +56,18 @@ public class ProductManager : IProductManager
         if (dbModel == null)
             return false;
 
-        if (dbModel.IsDelete == true)
+        if (dbModel.Result.IsDelete == true)
             return false;
 
         _mapper.Map(productDTO, dbModel);
 
-        _productRepo.Update(dbModel);
+        _productRepo.Update(dbModel.Result);
         _productRepo.SaveChanges();
 
         return true;
     }
 
-    public void Delete(Guid id)
+    public void Delete(int id)
     {
         _productRepo.DeleteById(id);
         _productRepo.SaveChanges();

@@ -1,4 +1,6 @@
-﻿namespace E_Commerce_DAL;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace E_Commerce_DAL;
 
 public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : class
 {
@@ -16,14 +18,19 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : class
 
     #region Method
 
-    public List<TEntity> GetAll()
+    public virtual async Task<IReadOnlyList<TEntity>> GetAll()
     {
-        return _context.Set<TEntity>().ToList();
+        return await _context.Set<TEntity>().ToListAsync();
     }
 
-    public TEntity? GetById(int id)
+    public virtual async Task<TEntity>? GetById(int id)
     {
-        return _context.Set<TEntity>().Find(id);
+        var result = await _context.Set<TEntity>().FindAsync(id);
+        if (result is null)
+        {
+            return null;
+        }
+        return result;
     }
 
     public void Add(TEntity entity)
@@ -45,7 +52,7 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : class
         var entityToDelete = GetById(id);
         if (entityToDelete is not null)
         {
-            _context.Set<TEntity>().Remove(entityToDelete);
+            _context.Set<TEntity>().Remove(entityToDelete.Result);
         }
     }
 

@@ -22,21 +22,22 @@ public class ProductsController : ControllerBase
     #region Method
     // GET: api/GetAllProduct
     [HttpGet("GetAllProduct")]
-    public ActionResult<IEnumerable<ReadProductDTO>> GetAllProduct()
+    public async Task<ActionResult<List<ReadProductDTO>>> GetAllProduct()
     {
-        return _productManager.GetAll();
+        var result = await _productManager.GetAll();
+        return Ok(result);
     }
 
     // GET: api/GetProductById/5
     [HttpGet("GetProductById/{id}")]
-    public ActionResult<ReadProductDTO> GetProductById(Guid id)
+    public async Task<ActionResult<ReadProductDTO>> GetProductById(int id)
     {
-        var productDTO = _productManager.GetById(id);
+        return await _productManager.GetById(id);
 
-        if (productDTO == null)
-            return NotFound();
+        //if (productDTO == null)
+        //    return NotFound();
 
-        return productDTO;
+         //productDTO;
     }
 
 
@@ -51,7 +52,7 @@ public class ProductsController : ControllerBase
 
     // PUT: api/EditProduct
     [HttpPut("EditProduct")]
-    public IActionResult EditProduct(UpdateProductDTO productDTO)
+    public ActionResult EditProduct(UpdateProductDTO productDTO)
     {
         //if (id != transaction.TransactionId)
         //{
@@ -68,7 +69,7 @@ public class ProductsController : ControllerBase
 
     // DELETE: api/DeleteProduct/5
     [HttpDelete("DeleteProduct/{id}")]
-    public async Task<IActionResult> DeleteProduct(Guid id)
+    public ActionResult DeleteProduct(int id)
     {
         _productManager.Delete(id);
 

@@ -2,11 +2,11 @@
 
 public interface IGenericRepo<TEntity> where TEntity : class
 {
-    List<TEntity> GetAll();
-    TEntity? GetById(Guid id);
+    Task<IReadOnlyList<TEntity>> GetAll();
+    Task<TEntity>? GetById(int id);
     void Add(TEntity entity);
     void Update(TEntity entity);
     void Delete(TEntity entity);
-    void DeleteById(Guid id);
+    void DeleteById(int id);
     void SaveChanges();
 }

@@ -20,28 +20,28 @@ public class ProductBrandManager : IProductBrandManager
     #endregion
 
     #region Method
-    public List<ReadProductBrandDTO> GetAll()
+    public async Task<IReadOnlyList<ReadProductBrandDTO>> GetAll()
     {
-        var dbBrand = _brandRepo.GetAll().Where(d => d.IsDelete == false);
+        var dbBrand = _brandRepo.GetAll().Result.Where(d => d.IsDelete == false);
 
-        return _mapper.Map<List<ReadProductBrandDTO>>(dbBrand);
+        return await Task.FromResult(_mapper.Map<List<ReadProductBrandDTO>>(dbBrand));
     }
 
-    public ReadProductBrandDTO? GetById(int id)
+    public async Task<ReadProductBrandDTO>? GetById(int id)
     {
         var dbBrand = _brandRepo.GetById(id);
 
         if (dbBrand == null)
             return null;
 
-        return _mapper.Map<ReadProductBrandDTO>(dbBrand);
+        return await Task.FromResult(_mapper.Map<ReadProductBrandDTO>(dbBrand));
     }
 
     public ReadProductBrandDTO Add(AddProductBrandDTO dbBrand)
     {
         var dbModel = _mapper.Map<ProductBrand>(dbBrand);
 
-        dbModel.Id = int.Parse;
+        //dbModel.Id = int.Parse;
         dbModel.IsDelete = false;
 
         _brandRepo.Add(dbModel);
@@ -57,12 +57,12 @@ public class ProductBrandManager : IProductBrandManager
         if (dbModel == null)
             return false;
 
-        if (dbModel.IsDelete == true)
+        if (dbModel.Result.IsDelete == true)
             return false;
 
         _mapper.Map(dbBrand, dbModel);
 
-        _brandRepo.Update(dbModel);
+        _brandRepo.Update(dbModel.Result);
         _brandRepo.SaveChanges();
 
         return true;

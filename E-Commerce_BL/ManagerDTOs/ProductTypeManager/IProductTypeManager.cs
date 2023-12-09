@@ -2,9 +2,9 @@
 
 public interface IProductTypeManager
 {
-    List<ReadProductTypeDTO> GetAll();
-    ReadProductTypeDTO? GetById(Guid id);
+    Task<IReadOnlyList<ReadProductTypeDTO>> GetAll();
+    Task<ReadProductTypeDTO>? GetById(int id);
     ReadProductTypeDTO Add(AddProductTypeDTO typeDTO);
     bool Update(UpdateProductTypeDTO typeDTO);
-    void Delete(Guid id);
+    void Delete(int id);
 }

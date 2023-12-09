@@ -23,21 +23,17 @@ public class ProductBrandController : Controller
     #region Method
     // GET: api/GetAllBrand
     [HttpGet("GetAllBrand")]
-    public ActionResult<IEnumerable<ReadProductBrandDTO>> GetAllBrand()
+    public async Task<ActionResult<List<ReadProductBrandDTO>>> GetAllBrand()
     {
-        return _brandManager.GetAll();
+        var result =  await _brandManager.GetAll();
+        return Ok(result);
     }
 
     // GET: api/GetBrandById/5
     [HttpGet("GetBrandById/{id}")]
-    public ActionResult<ReadProductBrandDTO> GetBrandById(Guid id)
+    public async Task<ActionResult<ReadProductBrandDTO>> GetBrandById(int id)
     {
-        var brandDTO = _brandManager.GetById(id);
-
-        if (brandDTO == null)
-            return NotFound();
-
-        return brandDTO;
+        return await _brandManager.GetById(id);
     }
 
 
@@ -69,7 +65,7 @@ public class ProductBrandController : Controller
 
     // DELETE: api/DeleteBrand/5
     [HttpDelete("DeleteBrand/{id}")]
-    public ActionResult DeleteBrand(Guid id)
+    public ActionResult DeleteBrand(int id)
     {
         _brandManager.Delete(id);
 
