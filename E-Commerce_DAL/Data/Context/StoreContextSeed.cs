@@ -20,28 +20,28 @@ public class StoreContextSeed
                 await context.SaveChangesAsync();
             }
 
-            if (!context.ProductTypes.Any())
-            {
-                var typeData = File.ReadAllText("../E_Commerce_DAL/Data/SeedData/types.json");
-                var types = JsonSerializer.Deserialize<List<ProductType>>(typeData);
-                //D:\Projects\E-Commerce\E-Commerce_Backend\E-Commerce_DAL\Data\SeedData\brands.json
-                foreach (var item in types)
-                {
-                    context.ProductTypes.Add(item);
-                }
-                await context.SaveChangesAsync();
-            }
+            //if (!context.ProductTypes.Any())
+            //{
+            //    var typeData = File.ReadAllText("../E_Commerce_DAL/Data/SeedData/types.json");
+            //    var types = JsonSerializer.Deserialize<List<ProductType>>(typeData);
+            //    //D:\Projects\E-Commerce\E-Commerce_Backend\E-Commerce_DAL\Data\SeedData\brands.json
+            //    foreach (var item in types)
+            //    {
+            //        context.ProductTypes.Add(item);
+            //    }
+            //    await context.SaveChangesAsync();
+            //}
 
-            if (!context.Products.Any())
-            {
-                var productsData = File.ReadAllText("../E_Commerce_DAL/Data/SeedData/products.json");
-                var products = JsonSerializer.Deserialize<List<Product>>(productsData);
-                foreach (var item in products)
-                {
-                    context.Products.Add(item);
-                }
-                await context.SaveChangesAsync();
-            }
+            //if (!context.Products.Any())
+            //{
+            //    var productsData = File.ReadAllText("../E_Commerce_DAL/Data/SeedData/products.json");
+            //    var products = JsonSerializer.Deserialize<List<Product>>(productsData);
+            //    foreach (var item in products)
+            //    {
+            //        context.Products.Add(item);
+            //    }
+            //    await context.SaveChangesAsync();
+            //}
         }
         catch (Exception ex)
         {

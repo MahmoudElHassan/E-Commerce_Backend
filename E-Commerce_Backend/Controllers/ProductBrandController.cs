@@ -1,5 +1,4 @@
 ﻿using E_Commerce_BL;
-using E_Commerce_BL.ManagerDTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,7 +57,7 @@ public class ProductBrandController : Controller
         var dbBrand = _brandManager.Update(brandDTO);
 
         if (dbBrand)
-            return NoContent();
+            return Ok(dbBrand);
 
         return NotFound();
     }

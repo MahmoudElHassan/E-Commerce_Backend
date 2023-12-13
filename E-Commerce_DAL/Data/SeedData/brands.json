@@ -1,32 +1,26 @@
 [
   {
-    "Id": 1,
-    "Name": "Angular",
-    "IsDelete": false
+    "name": "Angular",
+    "isDelete": false
   },
   {
-    "Id": 2,
-    "Name": "NetCore",
-    "IsDelete": false
+    "name": "NetCore",
+    "isDelete": false
   },
   {
-    "Id": 3,
-    "Name": "VS Code",
-    "IsDelete": false
+    "name": "VS Code",
+    "isDelete": false
   },
   {
-    "Id": 4,
-    "Name": "React",
-    "IsDelete": false
+    "name": "React",
+    "isDelete": false
   },
   {
-    "Id": 5,
-    "Name": "Typescript",
-    "IsDelete": false
+    "name": "Typescript",
+    "isDelete": false
   },
   {
-    "Id": 6,
-    "Name": "Redis",
-    "IsDelete": false
+    "name": "Redis",
+    "isDelete": false
   }
 ]

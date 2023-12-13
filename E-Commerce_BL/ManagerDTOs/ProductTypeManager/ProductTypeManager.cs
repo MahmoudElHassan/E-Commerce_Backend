@@ -26,11 +26,11 @@ public class ProductTypeManager : IProductTypeManager
         return await Task.FromResult(_mapper.Map<List<ReadProductTypeDTO>>(dbType));
     }
 
-    public async Task<ReadProductTypeDTO>? GetById(int id)
+    public async Task<ReadProductTypeDTO> GetById(int id)
     {
-        var dbType = _typeRepo.GetById(id);
+        var dbType = _typeRepo.GetById(id).Result;
 
-        if (dbType == null)
+        if (dbType is null || dbType.IsDelete is true)
             return null;
 
         return await Task.FromResult(_mapper.Map<ReadProductTypeDTO>(dbType));
@@ -53,10 +53,7 @@ public class ProductTypeManager : IProductTypeManager
     {
         var dbModel = _typeRepo.GetById(typeDTO.Id);
 
-        if (dbModel == null)
-            return false;
-
-        if (dbModel.Result.IsDelete == true)
+        if (dbModel is null || dbModel.Result.IsDelete is true)
             return false;
 
         _mapper.Map(typeDTO, dbModel);

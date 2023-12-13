@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using E_Commerce_BL.ManagerDTOs;
 using E_Commerce_DAL;
 
 namespace E_Commerce_BL;
@@ -22,16 +21,16 @@ public class ProductBrandManager : IProductBrandManager
     #region Method
     public async Task<IReadOnlyList<ReadProductBrandDTO>> GetAll()
     {
-        var dbBrand = _brandRepo.GetAll().Result.Where(d => d.IsDelete == false);
+        var dbBrand = _brandRepo.GetAll().Result;
 
         return await Task.FromResult(_mapper.Map<List<ReadProductBrandDTO>>(dbBrand));
     }
 
-    public async Task<ReadProductBrandDTO>? GetById(int id)
+    public async Task<ReadProductBrandDTO> GetById(int id)
     {
-        var dbBrand = _brandRepo.GetById(id);
+        var dbBrand = _brandRepo.GetById(id).Result;
 
-        if (dbBrand == null)
+        if (dbBrand is null || dbBrand.IsDelete is true)
             return null;
 
         return await Task.FromResult(_mapper.Map<ReadProductBrandDTO>(dbBrand));
@@ -54,10 +53,7 @@ public class ProductBrandManager : IProductBrandManager
     {
         var dbModel = _brandRepo.GetById(dbBrand.Id);
 
-        if (dbModel == null)
-            return false;
-
-        if (dbModel.Result.IsDelete == true)
+        if (dbModel is null || dbModel.Result.IsDelete is true)
             return false;
 
         _mapper.Map(dbBrand, dbModel);

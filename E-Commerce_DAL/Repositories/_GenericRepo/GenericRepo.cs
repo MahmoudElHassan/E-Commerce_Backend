@@ -2,7 +2,7 @@
 
 namespace E_Commerce_DAL;
 
-public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : class
+public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : BaseEntity
 {
     #region Field
     private readonly ApplicationDbContext _context;
@@ -23,7 +23,7 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : class
         return await _context.Set<TEntity>().ToListAsync();
     }
 
-    public virtual async Task<TEntity>? GetById(int id)
+    public virtual async Task<TEntity> GetById(int id)
     {
         var result = await _context.Set<TEntity>().FindAsync(id);
         if (result is null)

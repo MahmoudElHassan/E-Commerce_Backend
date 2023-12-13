@@ -7,7 +7,11 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<Product, ReadProductDTO>();
+        CreateMap<Product, ReadProductDTO>()
+            .ForMember(x=>x.productBrand, z=>z.MapFrom(v=>v.productBrand.Name))
+            .ForMember(x => x.productType, z => z.MapFrom(v => v.productType.Name))
+            .ForMember(x => x.PictureURL, z => z.MapFrom<ProducrAPIResolver>());
+
         CreateMap<AddProductDTO, Product>();
         CreateMap<UpdateProductDTO, Product>();
 

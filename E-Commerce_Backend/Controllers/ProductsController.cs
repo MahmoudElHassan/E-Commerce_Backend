@@ -62,7 +62,7 @@ public class ProductsController : ControllerBase
         var dbProduct = _productManager.Update(productDTO);
 
         if (dbProduct)
-            return NoContent();
+            return Ok(dbProduct);
 
         return NotFound();
     }

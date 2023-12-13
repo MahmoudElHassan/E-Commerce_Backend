@@ -1,5 +1,4 @@
-﻿using E_Commerce_BL.ManagerDTOs;
-using E_Commerce_BL;
+﻿using E_Commerce_BL;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -59,7 +58,7 @@ public class ProductTypeController : ControllerBase
         var dbType = _typeManager.Update(typeDTO);
 
         if (dbType)
-            return NoContent();
+            return Ok(dbType);
 
         return NotFound();
     }

@@ -1,5 +1,4 @@
 using E_Commerce_BL;
-using E_Commerce_BL.ManagerDTOs;
 using E_Commerce_DAL;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +18,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 
 #region Reposatories
+builder.Services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<IProductBrandRepo, ProductBrandRepo>();
 builder.Services.AddScoped<IProductTypeRepo, ProductTypeRepo>();
@@ -56,6 +56,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 

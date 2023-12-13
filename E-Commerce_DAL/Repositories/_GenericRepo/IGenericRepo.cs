@@ -1,6 +1,6 @@
 ﻿namespace E_Commerce_DAL;
 
-public interface IGenericRepo<TEntity> where TEntity : class
+public interface IGenericRepo<TEntity> where TEntity : BaseEntity
 {
     Task<IReadOnlyList<TEntity>> GetAll();
     Task<TEntity>? GetById(int id);

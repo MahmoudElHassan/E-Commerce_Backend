@@ -21,16 +21,17 @@ public class ProductManager : IProductManager
     #region Method
     public Task<IReadOnlyList<ReadProductDTO>> GetAll()
     {
-        var dbProduct = _productRepo.GetAll().Result.Where(d => d.IsDelete == false);
+        //var brand = _productRepo.GetAll().Result.Where(x => x.productBrand.Name);
+        var dbProduct = _productRepo.GetAllEagerLoad().Result;
 
         return Task.FromResult(_mapper.Map<IReadOnlyList<ReadProductDTO>>(dbProduct));
     }
 
-    public async Task<ReadProductDTO>? GetById(int id)
+    public async Task<ReadProductDTO> GetById(int id)
     {
-        var dbProduct = _productRepo.GetById(id);
+        var dbProduct = _productRepo.GetByIdEagerLoad(id).Result;
 
-        if (dbProduct == null)
+        if (dbProduct is null)
             return null;
 
         return await Task.FromResult(_mapper.Map<ReadProductDTO>(dbProduct));
@@ -53,10 +54,7 @@ public class ProductManager : IProductManager
     {
         var dbModel = _productRepo.GetById(productDTO.Id);
 
-        if (dbModel == null)
-            return false;
-
-        if (dbModel.Result.IsDelete == true)
+        if (dbModel is null || dbModel.Result.IsDelete is true)
             return false;
 
         _mapper.Map(productDTO, dbModel);

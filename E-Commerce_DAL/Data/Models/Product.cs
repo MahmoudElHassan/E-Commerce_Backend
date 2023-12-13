@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace E_Commerce_DAL;
 
-public class Product : BascEntity
+public class Product : BaseEntity
 {
     [Required]
     [MaxLength(100)]
@@ -19,10 +19,10 @@ public class Product : BascEntity
 
     [ForeignKey("productType")]
     public int ProductTypeId { get; set; }
-    public virtual ProductType? productType { get; set; }
+    public ProductType productType { get; set; }
 
     [ForeignKey("productBrand")]
     public int ProductBrandId { get; set; }
-    public virtual ProductBrand? productBrand { get; set; }
+    public ProductBrand productBrand { get; set; }
 
 }

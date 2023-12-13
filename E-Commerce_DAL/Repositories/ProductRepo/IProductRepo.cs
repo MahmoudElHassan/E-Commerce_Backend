@@ -2,4 +2,6 @@
 
 public interface IProductRepo : IGenericRepo<Product>
 {
+    Task<IReadOnlyList<Product>> GetAllEagerLoad();
+    Task<Product> GetByIdEagerLoad(int id);
 }

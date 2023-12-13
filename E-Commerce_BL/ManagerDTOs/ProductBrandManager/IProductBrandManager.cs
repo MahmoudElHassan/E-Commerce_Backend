@@ -1,4 +1,4 @@
-﻿namespace E_Commerce_BL.ManagerDTOs;
+﻿namespace E_Commerce_BL;
 
 public interface IProductBrandManager
 {
