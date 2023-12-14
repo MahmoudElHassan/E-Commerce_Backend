@@ -1,13 +1,10 @@
 ﻿using E_Commerce_BL;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Data;
 
 namespace E_Commerce_Backend;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ProductTypeController : ControllerBase
+public class ProductTypeController : BaseApiController
 {
     #region Field
     private readonly IProductTypeManager _typeManager;
@@ -31,9 +28,16 @@ public class ProductTypeController : ControllerBase
 
     // GET: api/GetTypeById/5
     [HttpGet("GetTypeById/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ReadProductTypeDTO>> GetTypeById(int id)
     {
-        return await _typeManager.GetById(id);
+        var dbType = await _typeManager.GetById(id);
+
+        if (dbType is null || dbType.IsDelete is true)
+            return NotFound(new ApiResponse(404));
+
+        return dbType;
     }
 
 

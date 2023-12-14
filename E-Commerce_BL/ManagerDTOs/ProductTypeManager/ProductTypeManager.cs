@@ -30,9 +30,6 @@ public class ProductTypeManager : IProductTypeManager
     {
         var dbType = _typeRepo.GetById(id).Result;
 
-        if (dbType is null || dbType.IsDelete is true)
-            return null;
-
         return await Task.FromResult(_mapper.Map<ReadProductTypeDTO>(dbType));
     }
 

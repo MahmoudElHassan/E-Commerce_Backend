@@ -1,12 +1,9 @@
 ﻿using E_Commerce_BL;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce_Backend;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ProductBrandController : Controller
+public class ProductBrandController : BaseApiController
 {
     #region Field
     private readonly IProductBrandManager _brandManager;
@@ -30,9 +27,16 @@ public class ProductBrandController : Controller
 
     // GET: api/GetBrandById/5
     [HttpGet("GetBrandById/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ReadProductBrandDTO>> GetBrandById(int id)
     {
-        return await _brandManager.GetById(id);
+        var dbBrand = await _brandManager.GetById(id);
+
+        if (dbBrand is null || dbBrand.IsDelete is true)
+            return NotFound(new ApiResponse(404));
+
+        return dbBrand;
     }
 
 

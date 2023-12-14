@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce_Backend;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ProductsController : ControllerBase
+public class ProductsController : BaseApiController
 {
     #region Field
     private readonly IProductManager _productManager;
@@ -30,14 +28,16 @@ public class ProductsController : ControllerBase
 
     // GET: api/GetProductById/5
     [HttpGet("GetProductById/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ReadProductDTO>> GetProductById(int id)
     {
-        return await _productManager.GetById(id);
+        var dbProduct = await _productManager.GetById(id);
 
-        //if (productDTO == null)
-        //    return NotFound();
+        if (dbProduct is null || dbProduct.IsDelete is true)
+            return NotFound(new ApiResponse(404));
 
-         //productDTO;
+        return dbProduct;
     }
 
 

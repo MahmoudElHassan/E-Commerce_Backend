@@ -31,9 +31,6 @@ public class ProductManager : IProductManager
     {
         var dbProduct = _productRepo.GetByIdEagerLoad(id).Result;
 
-        if (dbProduct is null)
-            return null;
-
         return await Task.FromResult(_mapper.Map<ReadProductDTO>(dbProduct));
     }
 

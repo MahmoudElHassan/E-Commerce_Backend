@@ -1,67 +1,63 @@
+using E_Commerce_Backend;
 using E_Commerce_BL;
 using E_Commerce_DAL;
 using Microsoft.EntityFrameworkCore;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var connectinString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectinString));
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
+builder.Services.AddApplicationServices();
 
-#region Reposatories
-builder.Services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
-builder.Services.AddScoped<IProductRepo, ProductRepo>();
-builder.Services.AddScoped<IProductBrandRepo, ProductBrandRepo>();
-builder.Services.AddScoped<IProductTypeRepo, ProductTypeRepo>();
-#endregion
-
-#region Managers
-builder.Services.AddScoped<IProductManager, ProductManager>();
-builder.Services.AddScoped<IProductBrandManager, ProductBrandManager>();
-builder.Services.AddScoped<IProductTypeManager, ProductTypeManager>();
-#endregion
+builder.Services.AddSwaggerDocumentation();
 
 #region Allow Cors
 
-string allowPolicy = "AllowPolicy";
+//string allowPolicy = "AllowPolicy";
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(allowPolicy, policy =>
-    {
-        policy.AllowAnyHeader()
-        .AllowAnyOrigin()
-        .AllowAnyMethod();
-    });
-});
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy(allowPolicy, policy =>
+//    {
+//        policy.AllowAnyHeader()
+//        .AllowAnyOrigin()
+//        .AllowAnyMethod();
+//    });
+//});
 
 #endregion
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseHttpsRedirection();
 
+//app.UseRouting();
 app.UseStaticFiles();
 
 app.UseAuthorization();
 
+app.UseSwaggerDocumentation();
+
 app.MapControllers();
+
+
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapControllers();
+//});
 
 
 //using var scope = app.Services.CreateScope();

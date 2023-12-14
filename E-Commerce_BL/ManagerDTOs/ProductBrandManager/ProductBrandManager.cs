@@ -30,9 +30,6 @@ public class ProductBrandManager : IProductBrandManager
     {
         var dbBrand = _brandRepo.GetById(id).Result;
 
-        if (dbBrand is null || dbBrand.IsDelete is true)
-            return null;
-
         return await Task.FromResult(_mapper.Map<ReadProductBrandDTO>(dbBrand));
     }
 
