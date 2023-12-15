@@ -20,9 +20,9 @@ public class ProductsController : BaseApiController
     #region Method
     // GET: api/GetAllProduct
     [HttpGet("GetAllProduct")]
-    public async Task<ActionResult<List<ReadProductDTO>>> GetAllProduct()
+    public async Task<ActionResult<List<ReadProductDTO>>> GetAllProduct([FromQuery] ProductSpecParams productParams)
     {
-        var result = await _productManager.GetAll();
+        var result = await _productManager.GetAll(productParams);
         return Ok(result);
     }
 
