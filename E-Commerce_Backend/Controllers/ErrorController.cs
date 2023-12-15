@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace E_Commerce_Backend;
+namespace E-Commerce_API;
 
 [Route("errors/{code}")]
 [ApiExplorerSettings(IgnoreApi = true)]

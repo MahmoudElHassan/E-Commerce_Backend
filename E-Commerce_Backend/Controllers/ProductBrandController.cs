@@ -1,7 +1,7 @@
 ﻿using E_Commerce_BL;
 using Microsoft.AspNetCore.Mvc;
 
-namespace E_Commerce_Backend;
+namespace E-Commerce_API;
 
 public class ProductBrandController : BaseApiController
 {

@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using E_Commerce_DAL;
-using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace E_Commerce_BL;
 
@@ -21,27 +19,12 @@ public class ProductManager : IProductManager
     #endregion
 
     #region Method
-    public async Task<IReadOnlyList<ReadProductDTO>> GetAll([FromQuery] ProductSpecParams productParams)
+    public Task<IReadOnlyList<ReadProductDTO>> GetAll()
     {
-
-        var spec = new ProductsWithTypesAndBrandsSpecification(productParams);
-        var countSpec = new ProductsWithFiltersForCountSpecification(productParams);
-
-        var totalItems = await _productRepo.CountAsync(countSpec);
-        var products = await _productRepo.ListAsync(spec);
-
-        new Pagination<ReadProductDTO>(productParams.PageIndex, productParams.PageSize, totalItems, data);
-
-        return _mapper.Map<IReadOnlyList<ReadProductDTO>>(products);
-
-        //new Pagination<ReadProductDTO>(productParams.PageIndex, productParams.PageSize, totalItems, data);
-
-        //var spec = new ProductsWithTypesAndBrandsSpecification(productParams);
-
         //var brand = _productRepo.GetAll().Result.Where(x => x.productBrand.Name);
-        //var dbProduct = _productRepo.GetAllEagerLoad().Result;
+        var dbProduct = _productRepo.GetAllEagerLoad().Result;
 
-        //return Task.FromResult(_mapper.Map<IReadOnlyList<ReadProductDTO>>(dbProduct));
+        return Task.FromResult(_mapper.Map<IReadOnlyList<ReadProductDTO>>(dbProduct));
     }
 
     public async Task<ReadProductDTO> GetById(int id)

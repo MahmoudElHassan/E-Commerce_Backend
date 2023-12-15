@@ -2,7 +2,7 @@
 using E_Commerce_DAL;
 using Microsoft.AspNetCore.Mvc;
 
-namespace E_Commerce_Backend;
+namespace E-Commerce_API;
 
 public static class ApplicationServicesExtensions
 {
