@@ -61,29 +61,6 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : BaseEn
         _context.SaveChanges();
     }
 
-    public async Task<int> CountAsync(ISpecification<TEntity> spec)
-    {
-        return await ApplySpecification(spec).CountAsync();
-    }
 
-    public async Task<TEntity> GetEntityWithSpec(ISpecification<TEntity> spec)
-    {
-        return await ApplySpecification(spec).FirstOrDefaultAsync();
-    }
-
-    public async Task<IReadOnlyList<TEntity>> ListAllAsync()
-    {
-        return await _context.Set<TEntity>().ToListAsync();
-    }
-
-    public async Task<IReadOnlyList<TEntity>> ListAsync(ISpecification<TEntity> spec)
-    {
-        return await ApplySpecification(spec).ToListAsync();
-    }
-
-    private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> spec)
-    {
-        return SpecificationEvaluator<TEntity>.GetQuery(_context.Set<TEntity>().AsQueryable(), spec);
-    }
     #endregion
 }
