@@ -1,4 +1,4 @@
-﻿namespace E-Commerce_API;
+﻿namespace E-Commerce_Backend;
 
 public class ApiResponse
 {

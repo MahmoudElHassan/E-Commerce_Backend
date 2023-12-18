@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
-namespace E-Commerce_API;
+namespace E-Commerce_Backend;
 
 public class ProductTypeController : BaseApiController
 {
