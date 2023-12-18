@@ -1,4 +1,4 @@
-﻿namespace E-Commerce_Backend;
+﻿namespace E;
 
 public class ApiValidationErrorResponse : ApiResponse
 {

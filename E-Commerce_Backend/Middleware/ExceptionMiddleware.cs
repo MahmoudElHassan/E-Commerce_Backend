@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Net;
 
-namespace E-Commerce_Backend;
+namespace E;
 
 public class ExceptionMiddleware
 {

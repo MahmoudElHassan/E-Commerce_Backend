@@ -1,7 +1,7 @@
 ﻿using E_Commerce_DAL;
 using Microsoft.AspNetCore.Mvc;
 
-namespace E-Commerce_Backend;
+namespace E;
 
 public class BuggyController : BaseApiController
 {

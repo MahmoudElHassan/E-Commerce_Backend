@@ -1,7 +1,7 @@
 ﻿using E_Commerce_BL;
 using Microsoft.AspNetCore.Mvc;
 
-namespace E-Commerce_Backend;
+namespace E;
 
 public class ProductsController : BaseApiController
 {
