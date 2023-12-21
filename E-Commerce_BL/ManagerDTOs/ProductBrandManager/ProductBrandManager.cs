@@ -21,14 +21,14 @@ public class ProductBrandManager : IProductBrandManager
     #region Method
     public async Task<IReadOnlyList<ReadProductBrandDTO>> GetAll()
     {
-        var dbBrand = _brandRepo.GetAll().Result;
+        var dbBrand = _brandRepo.ListAllAsync().Result;
 
         return await Task.FromResult(_mapper.Map<List<ReadProductBrandDTO>>(dbBrand));
     }
 
     public async Task<ReadProductBrandDTO> GetById(int id)
     {
-        var dbBrand = _brandRepo.GetById(id).Result;
+        var dbBrand = _brandRepo.GetByIdAsync(id).Result;
 
         return await Task.FromResult(_mapper.Map<ReadProductBrandDTO>(dbBrand));
     }
@@ -48,7 +48,7 @@ public class ProductBrandManager : IProductBrandManager
 
     public bool Update(UpdateProductBrandDTO dbBrand)
     {
-        var dbModel = _brandRepo.GetById(dbBrand.Id);
+        var dbModel = _brandRepo.GetByIdAsync(dbBrand.Id);
 
         if (dbModel is null || dbModel.Result.IsDelete is true)
             return false;

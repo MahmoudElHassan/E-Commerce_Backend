@@ -19,19 +19,22 @@ public class ProductManager : IProductManager
     #endregion
 
     #region Method
-    public Task<IReadOnlyList<ReadProductDTO>> GetAll()
+    public async Task<IReadOnlyList<ReadProductDTO>> GetAll(string sort, int? brandId, int? typeId)
     {
-        //var brand = _productRepo.GetAll().Result.Where(x => x.productBrand.Name);
-        var dbProduct = _productRepo.GetAllEagerLoad().Result;
+        var spec = new ProductsWithTypesAndBrandsSpecification(sort,brandId,typeId);
 
-        return Task.FromResult(_mapper.Map<IReadOnlyList<ReadProductDTO>>(dbProduct));
+        var dbProduct = await _productRepo.ListAsync(spec);
+
+        return _mapper.Map<IReadOnlyList<ReadProductDTO>>(dbProduct);
     }
 
     public async Task<ReadProductDTO> GetById(int id)
     {
-        var dbProduct = _productRepo.GetByIdEagerLoad(id).Result;
+        var spec = new ProductsWithTypesAndBrandsSpecification(id);
 
-        return await Task.FromResult(_mapper.Map<ReadProductDTO>(dbProduct));
+        var dbProduct = await _productRepo.GetEntityWithSpec(spec);
+
+        return _mapper.Map<ReadProductDTO>(dbProduct);
     }
 
     public ReadProductDTO Add(AddProductDTO productDTO)
@@ -49,7 +52,7 @@ public class ProductManager : IProductManager
 
     public bool Update(UpdateProductDTO productDTO)
     {
-        var dbModel = _productRepo.GetById(productDTO.Id);
+        var dbModel = _productRepo.GetByIdAsync(productDTO.Id);
 
         if (dbModel is null || dbModel.Result.IsDelete is true)
             return false;

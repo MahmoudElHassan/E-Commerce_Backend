@@ -21,14 +21,14 @@ public class ProductTypeManager : IProductTypeManager
     #region Method
     public async Task<IReadOnlyList<ReadProductTypeDTO>> GetAll()
     {
-        var dbType = _typeRepo.GetAll().Result.Where(d => d.IsDelete == false);
+        var dbType = _typeRepo.ListAllAsync().Result.Where(d => d.IsDelete == false);
 
         return await Task.FromResult(_mapper.Map<List<ReadProductTypeDTO>>(dbType));
     }
 
     public async Task<ReadProductTypeDTO> GetById(int id)
     {
-        var dbType = _typeRepo.GetById(id).Result;
+        var dbType = _typeRepo.GetByIdAsync(id).Result;
 
         return await Task.FromResult(_mapper.Map<ReadProductTypeDTO>(dbType));
     }
@@ -48,7 +48,7 @@ public class ProductTypeManager : IProductTypeManager
 
     public bool Update(UpdateProductTypeDTO typeDTO)
     {
-        var dbModel = _typeRepo.GetById(typeDTO.Id);
+        var dbModel = _typeRepo.GetByIdAsync(typeDTO.Id);
 
         if (dbModel is null || dbModel.Result.IsDelete is true)
             return false;
