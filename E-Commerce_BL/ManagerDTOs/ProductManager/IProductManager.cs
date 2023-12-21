@@ -4,7 +4,7 @@ namespace E_Commerce_BL;
 
 public interface IProductManager
 {
-    Task<IReadOnlyList<ReadProductDTO>> GetAll();
+    Task<IReadOnlyList<ReadProductDTO>> GetAll(string sort, int? brandId, int? typeId);
     Task<ReadProductDTO>? GetById(int id);
     ReadProductDTO Add(AddProductDTO productDTO);
     bool Update(UpdateProductDTO productDTO);

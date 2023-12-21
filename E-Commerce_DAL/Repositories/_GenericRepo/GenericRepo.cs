@@ -2,7 +2,7 @@
 
 namespace E_Commerce_DAL;
 
-public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : BaseEntity
+public class GenericRepo<T> : IGenericRepo<T> where T : BaseEntity
 {
     #region Field
     private readonly ApplicationDbContext _context;
@@ -18,14 +18,14 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : BaseEn
 
     #region Method
 
-    public virtual async Task<IReadOnlyList<TEntity>> GetAll()
+    public async Task<IReadOnlyList<T>> ListAllAsync()
     {
-        return await _context.Set<TEntity>().ToListAsync();
+        return await _context.Set<T>().ToListAsync();
     }
 
-    public virtual async Task<TEntity> GetById(int id)
+    public virtual async Task<T> GetByIdAsync(int id)
     {
-        var result = await _context.Set<TEntity>().FindAsync(id);
+        var result = await _context.Set<T>().FindAsync(id);
         if (result is null)
         {
             return null;
@@ -33,26 +33,36 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : BaseEn
         return result;
     }
 
-    public void Add(TEntity entity)
+    public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
     {
-        _context.Set<TEntity>().Add(entity);
+        return await ApplySpecification(spec).ToListAsync();
     }
 
-    public void Update(TEntity entity)
+    public async Task<T> GetEntityWithSpec(ISpecification<T> spec)
+    {
+        return await ApplySpecification(spec).FirstOrDefaultAsync();
+    }
+
+    public void Add(T entity)
+    {
+        _context.Set<T>().Add(entity);
+    }
+
+    public void Update(T entity)
     {
     }
 
-    public void Delete(TEntity entity)
+    public void Delete(T entity)
     {
-        _context.Set<TEntity>().Remove(entity);
+        _context.Set<T>().Remove(entity);
     }
 
     public void DeleteById(int id)
     {
-        var entityToDelete = GetById(id);
+        var entityToDelete = GetByIdAsync(id);
         if (entityToDelete is not null)
         {
-            _context.Set<TEntity>().Remove(entityToDelete.Result);
+            _context.Set<T>().Remove(entityToDelete.Result);
         }
     }
 
@@ -62,5 +72,9 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : BaseEn
     }
 
 
+    private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+    {
+        return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().Where(x=>x.IsDelete==false).AsQueryable(), spec);
+    }
     #endregion
 }

@@ -12,7 +12,7 @@ public class Product : BaseEntity
     [MaxLength(200)]
     public string Description { get; set; } = string.Empty;
     //[Range(18,2)]
-    public decimal Price { get; set; } = decimal.Zero;
+    public double Price { get; set; } = 0;
 
     [Required]
     public string PictureURL { get; set; } = string.Empty;
