@@ -18,22 +18,6 @@ builder.Services.AddApplicationServices();
 
 builder.Services.AddSwaggerDocumentation();
 
-#region Allow Cors
-
-//string allowPolicy = "AllowPolicy";
-
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy(allowPolicy, policy =>
-//    {
-//        policy.AllowAnyHeader()
-//        .AllowAnyOrigin()
-//        .AllowAnyMethod();
-//    });
-//});
-
-#endregion
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,6 +28,8 @@ app.UseHttpsRedirection();
 
 //app.UseRouting();
 app.UseStaticFiles();
+
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 

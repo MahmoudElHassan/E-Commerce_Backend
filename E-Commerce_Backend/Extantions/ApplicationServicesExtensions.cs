@@ -40,6 +40,18 @@ public static class ApplicationServicesExtensions
         services.AddScoped<IProductTypeManager, ProductTypeManager>();
         #endregion
 
+        #region Allow Cors
+        services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
+            });
+        #endregion
+
+       
+
         return services;
     }
 }
