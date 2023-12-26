@@ -1,11 +1,12 @@
 ﻿using E_Commerce_DAL;
+using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce_BL;
 
 public interface IProductManager
 {
-    Task<IReadOnlyList<ReadProductDTO>> GetAll(string sort, int? brandId, int? typeId);
-    Task<ReadProductDTO>? GetById(int id);
+    Task<Pagination<ReadProductDTO>> GetAll([FromQuery] ProductSpecParams productParams);    
+    Task<ReadProductDTO> GetById(int id);
     ReadProductDTO Add(AddProductDTO productDTO);
     bool Update(UpdateProductDTO productDTO);
     void Delete(int id);

@@ -1,4 +1,5 @@
 ﻿using E_Commerce_BL;
+using E_Commerce_DAL;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E;
@@ -19,9 +20,9 @@ public class ProductsController : BaseApiController
     #region Method
     // GET: api/GetAllProduct
     [HttpGet("GetAllProduct")]
-    public async Task<ActionResult<List<ReadProductDTO>>> GetAllProduct(string sort,int? brandId,int? typeId)
+    public async Task<ActionResult<IReadOnlyList<ReadProductDTO>>> GetAllProduct([FromQuery] ProductSpecParams productParams)
     { 
-        var result = await _productManager.GetAll(sort,brandId,typeId);
+        var result = await _productManager.GetAll(productParams);
 
         return Ok(result);
     }

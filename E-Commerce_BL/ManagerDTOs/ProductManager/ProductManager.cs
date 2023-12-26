@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using E_Commerce_DAL;
+using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce_BL;
 
@@ -19,13 +20,21 @@ public class ProductManager : IProductManager
     #endregion
 
     #region Method
-    public async Task<IReadOnlyList<ReadProductDTO>> GetAll(string sort, int? brandId, int? typeId)
+    public async Task<Pagination<ReadProductDTO>> GetAll([FromQuery] ProductSpecParams productParams)
     {
-        var spec = new ProductsWithTypesAndBrandsSpecification(sort,brandId,typeId);
+        var spec = new ProductsWithTypesAndBrandsSpecification(productParams);
+        var countSpec = new ProductsWithFiltersForCountSpecification(productParams);
 
-        var dbProduct = await _productRepo.ListAsync(spec);
+        var totalItems = await _productRepo.CountAsync(countSpec);
+        var products = await _productRepo.ListAsync(spec);
 
-        return _mapper.Map<IReadOnlyList<ReadProductDTO>>(dbProduct);
+        var data = _mapper.Map<IReadOnlyList<ReadProductDTO>>(products);
+
+        var result = new Pagination<ReadProductDTO>(productParams.PageIndex,
+            productParams.PageSize, totalItems, data);
+
+        return result;
+
     }
 
     public async Task<ReadProductDTO> GetById(int id)
