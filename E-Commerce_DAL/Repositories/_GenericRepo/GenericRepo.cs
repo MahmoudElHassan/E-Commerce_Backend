@@ -26,10 +26,10 @@ public class GenericRepo<T> : IGenericRepo<T> where T : BaseEntity
     public virtual async Task<T> GetByIdAsync(int id)
     {
         var result = await _context.Set<T>().FindAsync(id);
+
         if (result is null)
-        {
             return null;
-        }
+       
         return result;
     }
 
@@ -66,10 +66,9 @@ public class GenericRepo<T> : IGenericRepo<T> where T : BaseEntity
     public void DeleteById(int id)
     {
         var entityToDelete = GetByIdAsync(id);
+
         if (entityToDelete is not null)
-        {
             _context.Set<T>().Remove(entityToDelete.Result);
-        }
     }
 
     public void SaveChanges()

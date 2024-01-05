@@ -48,6 +48,7 @@ public class ApplicationDbContext : DbContext
             }
             else
             {
+                entry.State = EntityState.Modified;
                 entity.GetType().GetProperty("IsDelete")?.SetValue(entity, false);
             }
 
