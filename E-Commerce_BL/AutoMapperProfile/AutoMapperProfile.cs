@@ -23,5 +23,9 @@ public class AutoMapperProfile : Profile
         CreateMap<AddProductBrandDTO, ProductBrand>();
         CreateMap<UpdateProductBrandDTO, ProductBrand>();
 
+        CreateMap<CustomerBasketDto, CustomerBasket>();
+        CreateMap<BasketItemDto, BasketItem>();;
+
+
     }
 }

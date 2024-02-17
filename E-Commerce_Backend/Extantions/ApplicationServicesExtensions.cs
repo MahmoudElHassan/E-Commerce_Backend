@@ -1,6 +1,7 @@
 ﻿using E_Commerce_BL;
 using E_Commerce_DAL;
 using Microsoft.AspNetCore.Mvc;
+using StackExchange.Redis;
 
 namespace E;
 
@@ -16,13 +17,10 @@ public static class ApplicationServicesExtensions
                 .Where(x => x.Value.Errors.Count > 0)
                 .SelectMany(x => x.Value.Errors)
                 .Select(x => x.ErrorMessage).ToArray();
-
                 var errorResponse = new ApiValidationErrorResponse
                 {
                     Errors = errors
                 };
-
-
                 return new BadRequestObjectResult(errorResponse);
             };
         });
@@ -32,12 +30,14 @@ public static class ApplicationServicesExtensions
         services.AddScoped<IProductRepo, ProductRepo>();
         services.AddScoped<IProductBrandRepo, ProductBrandRepo>();
         services.AddScoped<IProductTypeRepo, ProductTypeRepo>();
+        //services.AddScoped<IBasketRepo, BasketRepo>();
         #endregion
 
         #region Managers
         services.AddScoped<IProductManager, ProductManager>();
         services.AddScoped<IProductBrandManager, ProductBrandManager>();
         services.AddScoped<IProductTypeManager, ProductTypeManager>();
+        services.AddScoped<IBasketManager, BasketManager>();
         #endregion
 
         #region Allow Cors

@@ -79,7 +79,7 @@ public class GenericRepo<T> : IGenericRepo<T> where T : BaseEntity
 
     private IQueryable<T> ApplySpecification(ISpecification<T> spec)
     {
-        return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().Where(x=>x.IsDelete==false).AsQueryable(), spec);
+        return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
     }
     #endregion
 }

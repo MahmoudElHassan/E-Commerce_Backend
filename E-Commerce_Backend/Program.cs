@@ -2,6 +2,7 @@ using E;
 using E_Commerce_BL;
 using E_Commerce_DAL;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,13 @@ builder.Services.AddEndpointsApiExplorer();
 
 var connectinString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectinString));
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(c =>
+{
+    var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
+    return ConnectionMultiplexer.Connect(configuration);
+});
+
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
