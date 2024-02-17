@@ -30,7 +30,6 @@ public static class ApplicationServicesExtensions
         services.AddScoped<IProductRepo, ProductRepo>();
         services.AddScoped<IProductBrandRepo, ProductBrandRepo>();
         services.AddScoped<IProductTypeRepo, ProductTypeRepo>();
-        //services.AddScoped<IBasketRepo, BasketRepo>();
         #endregion
 
         #region Managers
