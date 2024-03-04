@@ -1,4 +1,5 @@
 ﻿using E_Commerce_DAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E;
@@ -13,6 +14,12 @@ public class BuggyController : BaseApiController
     }
 
 
+    [HttpGet("testauth")]
+    [Authorize]
+    public ActionResult<string> GetSecretText()
+    {
+        return "secret stuff";
+    }
 
     [HttpGet("notfound")]
     public ActionResult GetNotFoundRequst()
@@ -29,7 +36,7 @@ public class BuggyController : BaseApiController
     public ActionResult GetServerErrorRequst()
     {
         var thing = _context.Products.Find(100);
-        
+
         var returnThing = thing.ToString();
 
         return Ok();

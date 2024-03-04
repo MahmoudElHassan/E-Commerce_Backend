@@ -8,7 +8,7 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateMap<Product, ReadProductDTO>()
-            .ForMember(x=>x.productBrand, z=>z.MapFrom(v=>v.productBrand.Name))
+            .ForMember(x => x.productBrand, z => z.MapFrom(v => v.productBrand.Name))
             .ForMember(x => x.productType, z => z.MapFrom(v => v.productType.Name))
             .ForMember(x => x.PictureURL, z => z.MapFrom<ProducrAPIResolver>());
 
@@ -24,7 +24,9 @@ public class AutoMapperProfile : Profile
         CreateMap<UpdateProductBrandDTO, ProductBrand>();
 
         CreateMap<CustomerBasketDto, CustomerBasket>();
-        CreateMap<BasketItemDto, BasketItem>();;
+        CreateMap<BasketItemDto, BasketItem>();
+
+        CreateMap<Address, AddressDto>().ReverseMap();
 
 
     }

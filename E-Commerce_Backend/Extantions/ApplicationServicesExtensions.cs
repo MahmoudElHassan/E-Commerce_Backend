@@ -9,27 +9,12 @@ public static class ApplicationServicesExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.Configure<ApiBehaviorOptions>(options =>
-        {
-            options.InvalidModelStateResponseFactory = actionContext =>
-            {
-                var errors = actionContext.ModelState
-                .Where(x => x.Value.Errors.Count > 0)
-                .SelectMany(x => x.Value.Errors)
-                .Select(x => x.ErrorMessage).ToArray();
-                var errorResponse = new ApiValidationErrorResponse
-                {
-                    Errors = errors
-                };
-                return new BadRequestObjectResult(errorResponse);
-            };
-        });
-
         #region Reposatories
         services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
         services.AddScoped<IProductRepo, ProductRepo>();
         services.AddScoped<IProductBrandRepo, ProductBrandRepo>();
         services.AddScoped<IProductTypeRepo, ProductTypeRepo>();
+        services.AddScoped<ITokenService, TokenService>();
         #endregion
 
         #region Managers
@@ -38,6 +23,22 @@ public static class ApplicationServicesExtensions
         services.AddScoped<IProductTypeManager, ProductTypeManager>();
         services.AddScoped<IBasketManager, BasketManager>();
         #endregion
+
+        services.Configure<ApiBehaviorOptions>(options =>
+         {
+             options.InvalidModelStateResponseFactory = actionContext =>
+             {
+                 var errors = actionContext.ModelState
+                 .Where(x => x.Value.Errors.Count > 0)
+                 .SelectMany(x => x.Value.Errors)
+                 .Select(x => x.ErrorMessage).ToArray();
+                 var errorResponse = new ApiValidationErrorResponse
+                 {
+                     Errors = errors
+                 };
+                 return new BadRequestObjectResult(errorResponse);
+             };
+         });
 
         #region Allow Cors
         services.AddCors(opt =>
@@ -49,7 +50,7 @@ public static class ApplicationServicesExtensions
             });
         #endregion
 
-       
+
 
         return services;
     }

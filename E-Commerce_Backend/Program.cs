@@ -1,6 +1,7 @@
 using E;
 using E_Commerce_BL;
 using E_Commerce_DAL;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -13,6 +14,9 @@ builder.Services.AddEndpointsApiExplorer();
 var connectinString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectinString));
 
+var connectionIdentity = builder.Configuration.GetConnectionString("IdentityConnetion");
+builder.Services.AddDbContext<AppIdentityDbContext>(x => x.UseSqlServer(connectionIdentity));
+
 builder.Services.AddSingleton<IConnectionMultiplexer>(c =>
 {
     var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
@@ -23,7 +27,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(c =>
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 builder.Services.AddApplicationServices();
-
+builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddSwaggerDocumentation();
 
 var app = builder.Build();
@@ -39,6 +43,7 @@ app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSwaggerDocumentation();
@@ -52,20 +57,23 @@ app.MapControllers();
 //});
 
 
-//using var scope = app.Services.CreateScope();
-//var services = scope.ServiceProvider;
-//var context = services.GetRequiredService<ApplicationDbContext>();
-//var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-//try
-//{
-//    await context.Database.MigrateAsync();
-//    await StoreContextSeed.SeedAsync(context, loggerFactory);
-//}
-//catch (Exception ex)
-//{
-//    var logger = loggerFactory.CreateLogger<Program>();
-//    logger.LogError(ex, "An error occured during migration");
-//}
-
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    //var context = services.GetRequiredService<ApplicationDbContext>();
+    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+    try
+    {
+        var UserManager = services.GetRequiredService<UserManager<AppUser>>();
+        var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+        await identityContext.Database.MigrateAsync();
+        await AppIdentityDbContextSeed.SeedUsersAsync(UserManager);
+    }
+    catch (Exception ex)
+    {
+        var logger = loggerFactory.CreateLogger<Program>();
+        logger.LogError(ex, "An error occured during migration");
+    }
+}
 
 app.Run();
