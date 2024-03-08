@@ -10,11 +10,14 @@ namespace E;
 
 public class AccountController : BaseApiController
 {
+    #region Field
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly ITokenService _tokenService;
     private readonly IMapper _mapper;
+    #endregion
 
+    #region ctor
     public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
         ITokenService tokenService, IMapper mapper)
     {
@@ -23,13 +26,14 @@ public class AccountController : BaseApiController
         _tokenService = tokenService;
         _mapper = mapper;
     }
+    #endregion
 
+    #region Methods
     [Authorize]
     [HttpGet]
     public async Task<ActionResult<UserDto>> GetCurrentUser()
     {
         //var email = HttpContext.User?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-
         //var user = await _userManager.FindByEmailAsync(email);
 
         var user = await _userManager.FindByEmailFromClaimsPrincipal(HttpContext.User);
@@ -65,11 +69,11 @@ public class AccountController : BaseApiController
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
-        //if (CheckEmailExistsAsync(registerDto.Email).Result.Value)
-        //{
-        //    return new BadRequestObjectResult(new ApiValidationErrorResponse
-        //    { Errors = new[] { "Email address is in use" } });
-        //}
+        if (CheckEmailExistsAsync(registerDto.Email).Result.Value)
+        {
+            return new BadRequestObjectResult(new ApiValidationErrorResponse
+            { Errors = new[] { "Email address is in use" } });
+        }
 
         var user = new AppUser
         {
@@ -101,10 +105,9 @@ public class AccountController : BaseApiController
     public async Task<ActionResult<AddressDto>> GetUserAddress()
     {
         //var email = HttpContext.User?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+        //var user = await _userManager.FindUserByClaimsPrincipleWithAddress(User);
 
         var user = await _userManager.FindUserByClaimsPrincipleWithAddress(HttpContext.User);
-
-        //var user = await _userManager.FindUserByClaimsPrincipleWithAddress(User);
 
         return _mapper.Map<Address, AddressDto>(user.Address);
     }
@@ -123,4 +126,6 @@ public class AccountController : BaseApiController
 
         return BadRequest("Problem updating the user");
     }
+
+    #endregion
 }

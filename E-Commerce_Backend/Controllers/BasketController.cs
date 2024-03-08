@@ -24,11 +24,11 @@ public class BasketController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasket basket)
+    public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasketDto basket)
     {
-        //var customerBasket = _mapper.Map<CustomerBasket>(basket);
+        var customerBasket = _mapper.Map<CustomerBasketDto, CustomerBasket>(basket);
 
-        var updatedBasket = await _basketManager.UpdateBasketAsync(basket);
+        var updatedBasket = await _basketManager.UpdateBasketAsync(customerBasket);
 
         return Ok(updatedBasket);
     }
