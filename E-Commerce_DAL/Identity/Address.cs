@@ -1,4 +1,4 @@
-namespace E_Commerce_DAL;
+namespace E_Commerce_DAL.Identity;
 
 public class Address
 {

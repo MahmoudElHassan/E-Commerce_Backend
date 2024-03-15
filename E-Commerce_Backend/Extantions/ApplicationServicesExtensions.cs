@@ -15,6 +15,7 @@ public static class ApplicationServicesExtensions
         services.AddScoped<IProductBrandRepo, ProductBrandRepo>();
         services.AddScoped<IProductTypeRepo, ProductTypeRepo>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         #endregion
 
         #region Managers
@@ -22,6 +23,7 @@ public static class ApplicationServicesExtensions
         services.AddScoped<IProductBrandManager, ProductBrandManager>();
         services.AddScoped<IProductTypeManager, ProductTypeManager>();
         services.AddScoped<IBasketManager, BasketManager>();
+        services.AddScoped<IOrderManager, OrderManager>();
         #endregion
 
         services.Configure<ApiBehaviorOptions>(options =>

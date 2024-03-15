@@ -1,3 +1,4 @@
+using E_Commerce_DAL.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace E_Commerce_DAL;

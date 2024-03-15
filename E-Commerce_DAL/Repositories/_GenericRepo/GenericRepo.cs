@@ -29,7 +29,7 @@ public class GenericRepo<T> : IGenericRepo<T> where T : BaseEntity
 
         if (result is null)
             return null;
-       
+
         return result;
     }
 
@@ -56,6 +56,8 @@ public class GenericRepo<T> : IGenericRepo<T> where T : BaseEntity
 
     public void Update(T entity)
     {
+        _context.Set<T>().Attach(entity);
+        _context.Entry(entity).State = EntityState.Modified;
     }
 
     public void Delete(T entity)

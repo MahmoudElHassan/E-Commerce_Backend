@@ -4,6 +4,7 @@ using E_Commerce_DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Commerce_DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240314191839_orderEntities")]
+    partial class orderEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,7 +50,7 @@ namespace E_Commerce_DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeliveryMethods", (string)null);
+                    b.ToTable("DeliveryMethods");
                 });
 
             modelBuilder.Entity("E_Commerce_DAL.Order", b =>
@@ -84,7 +87,7 @@ namespace E_Commerce_DAL.Migrations
 
                     b.HasIndex("DeliveryMethodId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("E_Commerce_DAL.OrderItem", b =>
@@ -111,7 +114,7 @@ namespace E_Commerce_DAL.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("E_Commerce_DAL.Product", b =>
@@ -154,7 +157,7 @@ namespace E_Commerce_DAL.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("E_Commerce_DAL.ProductBrand", b =>
@@ -175,7 +178,7 @@ namespace E_Commerce_DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductBrands", (string)null);
+                    b.ToTable("ProductBrands");
                 });
 
             modelBuilder.Entity("E_Commerce_DAL.ProductType", b =>
@@ -196,7 +199,7 @@ namespace E_Commerce_DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductTypes", (string)null);
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("E_Commerce_DAL.Order", b =>
@@ -205,7 +208,7 @@ namespace E_Commerce_DAL.Migrations
                         .WithMany()
                         .HasForeignKey("DeliveryMethodId");
 
-                    b.OwnsOne("E_Commerce_DAL.Order.ShipToAddress#E_Commerce_DAL.OrderAggregate.Address", "ShipToAddress", b1 =>
+                    b.OwnsOne("E_Commerce_DAL.OrderAggregate.Address", "ShipToAddress", b1 =>
                         {
                             b1.Property<int>("OrderId")
                                 .HasColumnType("int");
@@ -230,7 +233,7 @@ namespace E_Commerce_DAL.Migrations
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("Orders", (string)null);
+                            b1.ToTable("Orders");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
@@ -249,7 +252,7 @@ namespace E_Commerce_DAL.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.OwnsOne("E_Commerce_DAL.OrderItem.ItemOrdered#E_Commerce_DAL.ProductItemOrdered", "ItemOrdered", b1 =>
+                    b.OwnsOne("E_Commerce_DAL.ProductItemOrdered", "ItemOrdered", b1 =>
                         {
                             b1.Property<int>("OrderItemId")
                                 .HasColumnType("int");
@@ -265,7 +268,7 @@ namespace E_Commerce_DAL.Migrations
 
                             b1.HasKey("OrderItemId");
 
-                            b1.ToTable("OrderItems", (string)null);
+                            b1.ToTable("OrderItems");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderItemId");

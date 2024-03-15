@@ -57,23 +57,41 @@ app.MapControllers();
 //});
 
 
-using (var scope = app.Services.CreateScope())
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+var context = services.GetRequiredService<ApplicationDbContext>();
+var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+var userManager = services.GetRequiredService<UserManager<AppUser>>();
+var logger = services.GetRequiredService<ILogger<Program>>();
+try
 {
-    var services = scope.ServiceProvider;
-    //var context = services.GetRequiredService<ApplicationDbContext>();
-    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-    try
-    {
-        var UserManager = services.GetRequiredService<UserManager<AppUser>>();
-        var identityContext = services.GetRequiredService<AppIdentityDbContext>();
-        await identityContext.Database.MigrateAsync();
-        await AppIdentityDbContextSeed.SeedUsersAsync(UserManager);
-    }
-    catch (Exception ex)
-    {
-        var logger = loggerFactory.CreateLogger<Program>();
-        logger.LogError(ex, "An error occured during migration");
-    }
+    await context.Database.MigrateAsync();
+    await identityContext.Database.MigrateAsync();
+    await StoreContextSeed.SeedAsync(context);
+    await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
 }
+catch (Exception ex)
+{
+    logger.LogError(ex, "An error occured during migration");
+}
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    var context = services.GetRequiredService<ApplicationDbContext>();
+//    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+//    try
+//    {
+//        var UserManager = services.GetRequiredService<UserManager<AppUser>>();
+//        var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+//        await identityContext.Database.MigrateAsync();
+//        await AppIdentityDbContextSeed.SeedUsersAsync(UserManager);
+//    }
+//    catch (Exception ex)
+//    {
+//        var logger = loggerFactory.CreateLogger<Program>();
+//        logger.LogError(ex, "An error occured during migration");
+//    }
+//}
 
 app.Run();
