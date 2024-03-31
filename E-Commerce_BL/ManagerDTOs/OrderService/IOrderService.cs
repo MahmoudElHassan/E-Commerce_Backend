@@ -3,7 +3,7 @@ using E_Commerce_DAL.OrderAggregate;
 
 namespace E_Commerce_BL;
 
-public interface IOrderManager
+public interface IOrderService
 {
     Task<Order> CreateOrderAsync(string buyerEmail, int delieveryMethod, string basketId, Address shippingAddress);
     Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyerEmail);

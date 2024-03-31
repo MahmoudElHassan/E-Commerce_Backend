@@ -12,7 +12,7 @@ public class BasketItemDto
 
     [Required]
     [Range(0.1, double.MaxValue, ErrorMessage = "Price must be greater than zero")]
-    public double Price { get; set; }
+    public decimal Price { get; set; }
 
     [Required]
     [Range(1, double.MaxValue, ErrorMessage = "Quantity must be at least 1")]

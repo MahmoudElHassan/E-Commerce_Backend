@@ -23,7 +23,8 @@ public static class ApplicationServicesExtensions
         services.AddScoped<IProductBrandManager, ProductBrandManager>();
         services.AddScoped<IProductTypeManager, ProductTypeManager>();
         services.AddScoped<IBasketManager, BasketManager>();
-        services.AddScoped<IOrderManager, OrderManager>();
+        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IPaymentService, PaymentService>();
         #endregion
 
         services.Configure<ApiBehaviorOptions>(options =>

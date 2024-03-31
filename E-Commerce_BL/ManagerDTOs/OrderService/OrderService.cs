@@ -3,14 +3,16 @@ using E_Commerce_DAL.OrderAggregate;
 
 namespace E_Commerce_BL;
 
-public class OrderManager : IOrderManager
+public class OrderService : IOrderService
 {
     private readonly IBasketManager _basketManager;
     private readonly IUnitOfWork _unitOfWork;
-    public OrderManager(IBasketManager basketRepo, IUnitOfWork unitOfWork)
+    private readonly IPaymentService _paymentService;
+    public OrderService(IBasketManager basketRepo, IUnitOfWork unitOfWork, IPaymentService paymentService)
     {
         _unitOfWork = unitOfWork;
         _basketManager = basketRepo;
+        _paymentService = paymentService;
     }
 
     public async Task<Order> CreateOrderAsync(string buyerEmail, int deliveryMethodId, string basketId, Address shippingAddress)
@@ -38,23 +40,31 @@ public class OrderManager : IOrderManager
         var spec = new OrderByPaymentIntentIdSpecification(basket.PaymentIntentId);
         var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
 
-        if (order.BuyerEmail != buyerEmail &&
-            order.ShipToAddress != shippingAddress &&
-            order.DeliveryMethod != deliveryMethod &&
-            order.Subtotal != subtotal)
+        
+        if (order != null)
         {
-            order.ShipToAddress = shippingAddress;
-            order.DeliveryMethod = deliveryMethod;
-            order.Subtotal = subtotal;
-            _unitOfWork.Repository<Order>().Update(order);
+            _unitOfWork.Repository<Order>().Delete(order);
+            await _paymentService.CreateOrUpdatePaymentIntent(basket.PaymentIntentId);
         }
-        else
-        {
-            // create order
-            order = new Order(items, buyerEmail, shippingAddress, deliveryMethod,
-                subtotal, basket.PaymentIntentId);
-            _unitOfWork.Repository<Order>().Add(order);
-        }
+
+        // create order
+        order = new Order(items, buyerEmail, shippingAddress, deliveryMethod,
+            subtotal, basket.PaymentIntentId);
+        _unitOfWork.Repository<Order>().Add(order);
+
+        //if (order != null)
+        //{
+        //    //order.ShipToAddress = shippingAddress;
+        //    //order.DeliveryMethod = deliveryMethod;
+        //    //order.Subtotal = subtotal;
+        //}
+        //else
+        //{
+        //    // create order
+        //    order = new Order(items, buyerEmail, shippingAddress, deliveryMethod,
+        //        subtotal, basket.PaymentIntentId);
+        //    _unitOfWork.Repository<Order>().Add(order);
+        //}
 
         // save to db
         var result = await _unitOfWork.Complete();

@@ -10,9 +10,9 @@ namespace E;
 [Authorize]
 public class OrdersController : BaseApiController
 {
-    private readonly IOrderManager _orderManager;
+    private readonly IOrderService _orderManager;
     private readonly IMapper _mapper;
-    public OrdersController(IOrderManager orderManager, IMapper mapper)
+    public OrdersController(IOrderService orderManager, IMapper mapper)
     {
         _mapper = mapper;
         _orderManager = orderManager;
